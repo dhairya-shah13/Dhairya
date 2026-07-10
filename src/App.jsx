@@ -1,17 +1,28 @@
-import { useState } from 'react'
-import Skills from './components/Skills';
-
+import Header from './components/Header'
+import About from './components/About'
+import Skills from './components/Skills'
+import Footer from './components/Footer'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const skills = ['HTML','CSSS','JS','Gotelal']
+  const studentName = "DHAIRYA :D"
+  const skillList = [
+    "JavaScript", 
+    "React", 
+    "HTML/CSS", 
+    "Node.js", 
+    "Git & GitHub",
+    "Python",
+    "Database Management"
+  ]
 
   return (
-    <div>
-    <h1>My Portfolio</h1>
-    <Skills skillList={skills} />
-  </div>
+    <div className="app">
+      <Header name={studentName} />
+      <About />
+      <Skills skillList={skillList} />
+      <Footer />
+    </div>
   )
 }
 
