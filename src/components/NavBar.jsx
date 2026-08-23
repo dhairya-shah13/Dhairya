@@ -1,14 +1,22 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 function NavBar() {
   const location = useLocation()
   const currentPath = location.pathname
+  const { isAuthenticated, logout } = useAuth()
 
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/projects', label: 'Projects' },
-    { path: '/tasks', label: 'Tasks' },
-    { path: '/contact', label: 'Contact' }
+    ...(isAuthenticated ? [{ path: '/tasks', label: 'Tasks' }] : []),
+    { path: '/contact', label: 'Contact' },
+    ...(!isAuthenticated
+      ? [
+          { path: '/login', label: 'Login' },
+          { path: '/register', label: 'Register' },
+        ]
+      : []),
   ]
 
   return (
@@ -24,6 +32,13 @@ function NavBar() {
             </Link>
           </li>
         ))}
+        {isAuthenticated && (
+          <li>
+            <button type="button" className="nav-link nav-logout" onClick={logout}>
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
   )

@@ -35,6 +35,7 @@ function Tasks() {
         setTasks(Array.isArray(data) ? data : [])
       })
       .catch((err) => {
+        if (err.authRedirect) return
         setError(err.message || 'Failed to load tasks')
       })
       .finally(() => {
@@ -79,6 +80,7 @@ function Tasks() {
       })
       .catch((err) => {
         setTasks((prev) => prev.filter((t) => t._id !== tempId))
+        if (err.authRedirect) return
         showToast(err.message || 'Failed to create task', 'error')
       })
       .finally(() => {
@@ -114,6 +116,7 @@ function Tasks() {
         showToast('Task updated successfully')
       })
       .catch((err) => {
+        if (err.authRedirect) return
         showToast(err.message || 'Failed to update task', 'error')
       })
       .finally(() => {
@@ -130,6 +133,7 @@ function Tasks() {
         showToast('Task updated successfully')
       })
       .catch((err) => {
+        if (err.authRedirect) return
         showToast(err.message || 'Failed to update task', 'error')
       })
       .finally(() => {
@@ -150,6 +154,7 @@ function Tasks() {
         showToast('Task deleted successfully')
       })
       .catch((err) => {
+        if (err.authRedirect) return
         showToast(err.message || 'Failed to delete task', 'error')
       })
       .finally(() => {
