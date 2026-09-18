@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import Spinner from '../components/Spinner'
 import ErrorMessage from '../components/ErrorMessage'
+
+const ProjectStats = lazy(() => import('../components/ProjectStats'))
 
 function Projects() {
   const [repos, setRepos] = useState([])
@@ -63,6 +65,10 @@ function Projects() {
       {/* Conditionally render Success State */}
       {!loading && !error && (
         <>
+          <Suspense fallback={<div className="stat-loading">Calculating repository insights…</div>}>
+            <ProjectStats repos={repos} />
+          </Suspense>
+
           <div className="search-box">
             <input
               type="text"

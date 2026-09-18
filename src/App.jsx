@@ -1,18 +1,20 @@
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import { ToastProvider } from './components/Toast'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import Home from './pages/Home'
-import Projects from './pages/Projects'
-import Tasks from './pages/Tasks'
-import Contact from './pages/Contact'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import DelayedFallback from './components/DelayedFallback'
 import NotFound from './pages/NotFound'
 import './App.css'
+
+const Home = lazy(() => import('./pages/Home'))
+const Projects = lazy(() => import('./pages/Projects'))
+const Tasks = lazy(() => import('./pages/Tasks'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -41,22 +43,24 @@ function App() {
           </nav>
 
           <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route
-                path="/tasks"
-                element={
-                  <ProtectedRoute>
-                    <Tasks />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<DelayedFallback delay={300} />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route
+                  path="/tasks"
+                  element={
+                    <ProtectedRoute>
+                      <Tasks />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </main>
 
           <Footer />
