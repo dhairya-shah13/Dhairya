@@ -180,3 +180,30 @@ Example task payload:
 
 The backend can also be tested independently with Postman/curl against
 `http://localhost:5000/tasks`.
+
+
+---
+
+## 🐳 Practical 11 — Frontend Containerization with Docker & Nginx
+
+> **Practical 11: Production Containerization of React Frontend (CO4, CO5 / PO3, PO5)**  
+> **Repository:** `Dhairya` (Vite + React)  
+> **Status:** ✅ Containerized, Built & Verified  
+
+### 1. Multi-Stage Docker Build Architecture
+
+The React frontend is packaged using a multi-stage Docker build to keep the final image minimal, fast, and production-ready:
+
+1. **Stage 1 (Build):** `node:20-alpine` installs dependencies and executes `npm run build` to generate the minified production assets in `/dist`.
+2. **Stage 2 (Runtime):** `nginx:alpine` serves static files with gzip compression, asset caching headers, and SPA client-side fallback routing via `try_files $uri $uri/ /index.html;`.
+3. **Image Size:** Only **~26.4 MB** total footprint.
+
+### 2. Run Commands
+
+```bash
+# Build frontend Docker image
+docker build -t dhairya-frontend .
+
+# Run frontend container mapped to port 5173
+docker run -d --name dhairya-frontend-container -p 5173:80 dhairya-frontend
+```
